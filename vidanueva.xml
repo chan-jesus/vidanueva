@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+  <!-- Main Window Messages -->
+  <message id="main-template">
+    <div id="doc2" class="yui-t6">
+      <div id="hd" role="banner">
+        <h1>VidaNueva</h1>
+      </div>
+      <div id="bd" role="main">
+        <div id="yui-main">
+          <div class="yui-b">
+            <div class="yui-g">${content}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="yui-b">${nav}</div>
+    <div id="ft" role="contentinfo">
+      <p>Footer</p>
+    </div>
+  </message>
+  <message id="main-title">Welcome to VidaNueva</message>
+</messages>

@@ -1,0 +1,28 @@
+<server>
+  <application-settings location="*">
+    <session-management>
+      <shared-process>
+        <num-processes>1</num-processes>
+      </shared-process>
+      <tracking>URL</tracking>
+      <reload-is-new-session>${DEBUG}</reload-is-new-session>
+      <timeout>600</timeout>
+    </session-management>
+
+    <log-file>vidanueva.log</log-file>
+    <max-request-size>128</max-request-size>
+    <behind-reverse-proxy>false</behind-reverse-proxy>
+    <inline-css>true</inline-css>
+    <enable-debug>${DEBUG}</enable-debug>
+    <!-- When debugging is enabled, JavaScript errors are not caught, and thus will provide stack information when using a JavaScript debugger. -->
+    <debug>${DEBUG}</debug> 
+    <valgrind-path></valgrind-path>
+    <run-directory>.</run-directory>
+    <session-id-length>32</session-id-length>
+    <progressive-bootstrap>true</progressive-bootstrap>
+    <properties>
+        <property name="resourcesURL">resources/</property>
+    </properties>
+  </application-settings>
+</server>
+
