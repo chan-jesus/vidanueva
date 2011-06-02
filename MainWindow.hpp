@@ -23,10 +23,12 @@
 
 namespace Wt {
     class WContainerWidget;
+    class WString;
 }
 
 using Wt::WTemplate;
 using Wt::WContainerWidget;
+using Wt::WString;
 
 namespace vidanueva {
 
@@ -38,6 +40,7 @@ namespace vidanueva {
     public:
         MainWindow(WContainerWidget* parent=0);
         void onUserChanged(VidaApp* app);
+        void setStatusText(const WString& newMessage);
     };
 
 } // namespace vidavnueva

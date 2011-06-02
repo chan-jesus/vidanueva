@@ -5,7 +5,7 @@
     <div id="doc2" class="yui-t6">
       <div id="hd">
         <h1>VidaNueva</h1>
-        ${controls}
+        ${statusText}
       </div>
       <div id="bd">
         <div id="yui-main">
@@ -14,8 +14,11 @@
           </div>
         </div>
       </div>
+      <div class="yui-b">
+        <div class="yui-g">${controls}</div>
+        <div class="yui-g">${nav}</div>
+      </div>
     </div>
-    <div class="yui-b">${nav}</div>
     <div id="ft" role="contentinfo">
       <p>Footer</p>
     </div>

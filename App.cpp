@@ -44,6 +44,7 @@ VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment) {
     // Add some styles
     useStyleSheet(resourcesUrl() + "/themes/" + cssTheme() + "/forms.css");
     useStyleSheet(resourcesUrl() + "/themes/" + cssTheme() + "/fonts.css");
+    useStyleSheet(resourcesUrl() + "/themes/" + cssTheme() + "/controlPanel.css");
     // Configure our user login look up tool
     std::string mongoHost, mongoDb, mongoUsersTable;
     readConfigurationProperty("mongo-host", mongoHost); 
@@ -53,6 +54,7 @@ VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment) {
     // Load our message bundles
     messageResourceBundle().use(appRoot() + "messages/MainWindow");
     messageResourceBundle().use(appRoot() + "messages/LoginWindow");
+    messageResourceBundle().use(appRoot() + "messages/ControlPanel");
     // Set up the UI
     setTitle(WString::tr("main-title"));
     _mainWindow = new MainWindow(root());

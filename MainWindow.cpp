@@ -18,7 +18,9 @@
 
 #include "MainWindow.hpp"
 #include "App.hpp"
+#include "ControlPanel.hpp"
 #include <Wt/WAnchor>
+#include <Wt/WString>
 
 using Wt::WAnchor;
 
@@ -31,9 +33,10 @@ namespace vidanueva {
 */
 MainWindow::MainWindow(WContainerWidget* parent) : WTemplate(parent) {
     setTemplateText(tr("main-template"));
-    VidaApp* app = dynamic_cast<VidaApp*>(WApplication::instance());
+    VidaApp* app = getApp();
     app->userChanged()->connect(this, &MainWindow::onUserChanged);
     onUserChanged(app);
+    setStatusText("");
     bindString("nav", "NAV HERE");
 }
 
@@ -42,13 +45,19 @@ MainWindow::MainWindow(WContainerWidget* parent) : WTemplate(parent) {
 */
 void MainWindow::onUserChanged(VidaApp* app) {
     if (!app->loggedIn()) {
-      WAnchor* login = new WAnchor();
-      login->setRefInternalPath("/login");
-      login->setText(tr("login"));
-      bindWidget("controls", login);
+        WAnchor* login = new WAnchor();
+        login->setRefInternalPath("/login");
+        login->setText(tr("login"));
+        bindWidget("controls", login);
     } else {
-      bindString("controls", "Welcome " + app->username());
+        setStatusText("Welcome " + app->username());
+        bindWidget("controls", new ControlPanel());
     }
+}
+
+
+void MainWindow::setStatusText(const WString& newMessage) {
+    bindString("status-text", newMessage);
 }
 
 } // namespace vidanueva {
