@@ -30,9 +30,14 @@ using Wt::WContainerWidget;
 
 namespace vidanueva {
 
+    // Forward declartations
+    class VidaApp;
+
+    // The MainWindow Class
     class MainWindow : public WTemplate {
     public:
         MainWindow(WContainerWidget* parent=0);
+        void onUserChanged(VidaApp* app);
     };
 
 } // namespace vidavnueva

@@ -39,9 +39,13 @@ using Wt::WServer;
 namespace vidanueva {
 
 VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment) {
+    // Set up our signals
+    _userChanged = new AppSignal(this);
+    // Add some styles
+    useStyleSheet(resourcesUrl() + "/themes/" + cssTheme() + "/forms.css");
+    useStyleSheet(resourcesUrl() + "/themes/" + cssTheme() + "/fonts.css");
     // Configure our user login look up tool
     std::string mongoHost, mongoDb, mongoUsersTable;
-    useStyleSheet(resourcesUrl() + "/themes/" + cssTheme() + "/forms.css");
     readConfigurationProperty("mongo-host", mongoHost); 
     readConfigurationProperty("mongo-db", mongoDb);
     readConfigurationProperty("mongo-users-table", mongoUsersTable);
@@ -89,6 +93,7 @@ void VidaApp::showLoginDialog() {
             log("NOTICE") << loginWindow->username() << " logged in";
             log("NOTICE") << "GOING HOME 2";
             setInternalPath("/"); // Back to the home page
+            _userChanged->emit(this);
             return;
         }
         log("NOTICE") << loginWindow->username() << " failed log in";
@@ -96,6 +101,30 @@ void VidaApp::showLoginDialog() {
     _username = ""; // If we make it here .. we're not logged in anymore
     log("NOTICE") << "GOING HOME 3";
     setInternalPath("/"); // Back to the home page
+}
+
+
+/**
+* @brief The main vidanueva app
+*
+* @param env
+*
+* @return 
+*/
+WApplication *createApplication(const WEnvironment& env) { return new VidaApp(env); }
+
+/**
+* @brief If someone goes to / .. redirect them to /vida
+*
+* @param env
+*
+* @return 
+*/
+WApplication *createRedirectApp(const WEnvironment& env) {
+    WApplication* app = new WApplication(env);
+    app->redirect("/vida");
+    app->quit();
+    return app;
 }
 
 } // namespace vidanueva

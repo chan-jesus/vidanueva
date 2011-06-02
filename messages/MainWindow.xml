@@ -3,10 +3,11 @@
   <!-- Main Window Messages -->
   <message id="main-template">
     <div id="doc2" class="yui-t6">
-      <div id="hd" role="banner">
+      <div id="hd">
         <h1>VidaNueva</h1>
+        ${controls}
       </div>
-      <div id="bd" role="main">
+      <div id="bd">
         <div id="yui-main">
           <div class="yui-b">
             <div class="yui-g">${content}</div>
