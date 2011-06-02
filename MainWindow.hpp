@@ -32,13 +32,9 @@ namespace vidanueva {
 
     class MainWindow : public WTemplate {
     public:
-        MainWindow(WContainerWidget* parent=0) : WTemplate(parent) {
-            setTemplateText(tr("main-template"));
-            bindString("content", "CONTENT HERE");
-            bindString("nav", "NAV HERE");
-        }
-
+        MainWindow(WContainerWidget* parent=0);
     };
+
 } // namespace vidavnueva
 
 #endif // MAIN_WINDOW_HPP

@@ -2,10 +2,10 @@
   <application-settings location="*">
     <session-management>
       <shared-process>
-        <num-processes>1</num-processes>
+        <num-processes>50</num-processes>
       </shared-process>
-      <tracking>URL</tracking>
-      <reload-is-new-session>${DEBUG}</reload-is-new-session>
+      <tracking>Auto</tracking>
+      <reload-is-new-session>false</reload-is-new-session>
       <timeout>600</timeout>
     </session-management>
 
@@ -22,6 +22,9 @@
     <progressive-bootstrap>true</progressive-bootstrap>
     <properties>
         <property name="resourcesURL">resources/</property>
+        <property name="mongo-host">localhost</property>
+        <property name="mongo-db">vidanueva</property>
+        <property name="mongo-users-table">users</property>
     </properties>
   </application-settings>
 </server>

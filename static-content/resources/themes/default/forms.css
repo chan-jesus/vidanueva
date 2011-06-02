@@ -1,0 +1,24 @@
+label {
+  text-align: right;
+  float: right;
+}
+
+.dialog .yui-u input {
+  width: 100%;
+}
+
+.dialog div {
+  padding: 2px;
+}
+
+.dialog .yui-u {
+  padding: 0px;
+}
+
+.btn-box {
+  margin-top: 3px;
+}
+
+.dialog {
+  min-width: 200px;
+}

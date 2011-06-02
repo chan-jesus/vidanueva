@@ -16,12 +16,15 @@
  * =====================================================================================
  */
 
+#include "App.hpp"
 #include <Wt/WApplication>
 #include <Wt/WString>
 #include <Wt/WServer>
 #include <Wt/WLogger>
+#include <Wt/WDialog>
+#include <Wt/WPushButton>
 #include <string>
-#include "MainWindow.hpp"
+#include "LoginWindow.hpp"
 
 namespace Wt {
     class WEnvironment;
@@ -30,28 +33,88 @@ namespace Wt {
 using Wt::WString;
 using Wt::WApplication;
 using Wt::WEnvironment;
+using Wt::WDialog;
+using Wt::WServer;
 
 namespace vidanueva {
 
-    class VidaApp : public WApplication {
-    private:
-        MainWindow* _mainWindow;
-    public:
-        VidaApp(const WEnvironment &environment) : WApplication(environment) {
-            messageResourceBundle().use(appRoot() + "vidanueva");
-            setTitle(WString::tr("main-title"));
-            _mainWindow = new MainWindow(root());
-            setBodyClass("yui-skin-sam");
+VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment) {
+    // Configure our user login look up tool
+    std::string mongoHost, mongoDb, mongoUsersTable;
+    useStyleSheet(resourcesUrl() + "/themes/" + cssTheme() + "/forms.css");
+    readConfigurationProperty("mongo-host", mongoHost); 
+    readConfigurationProperty("mongo-db", mongoDb);
+    readConfigurationProperty("mongo-users-table", mongoUsersTable);
+    _userManager.configure(mongoHost, mongoDb, mongoUsersTable);
+    // Load our message bundles
+    messageResourceBundle().use(appRoot() + "messages/MainWindow");
+    messageResourceBundle().use(appRoot() + "messages/LoginWindow");
+    // Set up the UI
+    setTitle(WString::tr("main-title"));
+    _mainWindow = new MainWindow(root());
+    setBodyClass("yui-skin-sam");
+    // Hook up the url event handlers
+    internalPathChanged().connect(this, &VidaApp::onURLChange);
+}
+
+/**
+* @brief Called when the url is changed
+* 
+* At the moment we're only interested in showing the login dialog if the user is logged in
+*/
+void VidaApp::onURLChange(const std::string& path) {
+    log("NOTICE") << "Changing path: " << path;
+    if (internalPathMatches("/login")) {
+        log("NOTICE") << "Matches login path";
+        if (_username == "") {
+            // If no-one's logged in. Show the login dialog
+            showLoginDialog();
+        } else {
+            log("NOTICE") << "GOING HOME 1";
+            setInternalPath("/"); // Back to the home page .. can't login twice
         }
-
-    };
-
-    WApplication *createApplication(const WEnvironment& env) {
-      return new VidaApp(env);
     }
+}
+
+void VidaApp::showLoginDialog() {
+    log("NOTICE") << "Showing login dialog";
+    WDialog dialog(WString::tr("login"));
+    LoginWindow* loginWindow = new LoginWindow(dialog);
+    loginWindow->setFocus();
+    if (dialog.exec() == WDialog::Accepted) {
+        dialog.hide();
+        // See if we can log them in
+        if (_userManager.checkLogin(loginWindow->username(), loginWindow->password())) {
+            _username = loginWindow->username();
+            log("NOTICE") << loginWindow->username() << " logged in";
+            log("NOTICE") << "GOING HOME 2";
+            setInternalPath("/"); // Back to the home page
+            return;
+        }
+        log("NOTICE") << loginWindow->username() << " failed log in";
+    }
+    _username = ""; // If we make it here .. we're not logged in anymore
+    log("NOTICE") << "GOING HOME 3";
+    setInternalPath("/"); // Back to the home page
+}
 
 } // namespace vidanueva
 
 int main(int argc, char **argv) {
-  return WRun(argc, argv, &vidanueva::createApplication);
+    try {
+        WServer server(argv[0]);
+        server.setServerConfiguration(argc, argv, WTHTTP_CONFIGURATION);
+
+        server.addEntryPoint(Wt::Application, vidanueva::createApplication, "/vida", "/css/favicon.ico");
+        server.addEntryPoint(Wt::Application, vidanueva::createRedirectApp, "", "/css/favicon.ico");
+
+        if (server.start()) {
+            WServer::waitForShutdown();
+            server.stop();
+        }
+    } catch (Wt::WServer::Exception& e) {
+        std::cerr << e.what() << std::endl;
+    } catch (std::exception &e) {
+        std::cerr << "exception: " << e.what() << std::endl;
+    }
 }

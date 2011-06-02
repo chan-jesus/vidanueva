@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+  <!-- Login Window Messages -->
+  <message id="login-template">
+      <div class="yui-gd">
+          <div class="yui-u first">${username-label}</div>
+          <div class="yui-u">${username-edit}</div>
+      </div>
+      <div class="yui-gd">
+          <div class="yui-u first">${password-label}</div>
+          <div class="yui-u">${password-edit}</div>
+      </div>
+      <div class="yui-g">
+          <div class="yui-u first">${ok-btn}</div>
+          <div class="yui-u">${cancel-btn}</div>
+      </div>
+  </message>
+  <message id="username-label">Username:</message>
+  <message id="password-label">Password:</message>
+  <message id="ok-btn">OK</message>
+  <message id="cancel-btn">Cancel</message>
+  <message id="login">Login</message>
+</messages>
+
