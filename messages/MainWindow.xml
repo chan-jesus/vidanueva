@@ -5,12 +5,12 @@
     <div id="doc2" class="yui-t6">
       <div id="hd">
         <h1>VidaNueva</h1>
-        ${statusText}
+        ${status-text}
       </div>
       <div id="bd">
         <div id="yui-main">
           <div class="yui-b">
-            <div class="yui-g">${content}</div>
+            ${content}
           </div>
         </div>
       </div>

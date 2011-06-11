@@ -16,30 +16,39 @@
  * =====================================================================================
  */
 
-#ifndef CONTROLS_HPP
-#define CONTROLS_HPP
+#ifndef CONTROL_PANEL_HPP
+#define CONTROL_PANEL_HPP
 
 #include<Wt/WContainerWidget>
-#include<Wt/WPushButton>
+#include<Wt/WAnchor>
+#include<string>
 #include"App.hpp"
 
 using Wt::WContainerWidget;
-using Wt::WPushButton;
+using Wt::WAnchor;
+using std::string;
 
 namespace vidanueva {
 
 class ControlPanel : public WContainerWidget {
+public:
+    static const string addPageURL;
 private:
-    WPushButton* _addPageBtn;
+    WAnchor* _addPageLink;
 public:
     ControlPanel(WContainerWidget* parent=0) : WContainerWidget(parent) {
         VidaApp* app = getApp();
         setId("control-panel");
-        _addPageBtn = new WPushButton(tr("add-page"), this);
+        _addPageLink = new WAnchor(this);
+        _addPageLink->setText(tr("add-page"));
+        _addPageLink->setRefInternalPath(addPageURL);
+        app->internalPathChanged().connect(this, &ControlPanel::urlChanged);
     }
+    void addNewPage();
+    void urlChanged(const std::string& path);
 };
 
 
 } // namespace vidanueva
 
-#endif // CONTROLS_HPP
+#endif // CONTROL_PANEL_HPP

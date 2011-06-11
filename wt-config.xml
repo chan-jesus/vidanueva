@@ -16,12 +16,13 @@
     <enable-debug>${DEBUG}</enable-debug>
     <!-- When debugging is enabled, JavaScript errors are not caught, and thus will provide stack information when using a JavaScript debugger. -->
     <debug>${DEBUG}</debug> 
-    <valgrind-path></valgrind-path>
+    <valgrind-path>/usr/bin/valgrind</valgrind-path>
     <run-directory>.</run-directory>
-    <session-id-length>32</session-id-length>
+    <session-id-length>2</session-id-length>
     <progressive-bootstrap>true</progressive-bootstrap>
     <properties>
-        <property name="resourcesURL">resources/</property>
+        <property name="resourcesUrl">/resources</property>
+        <property name="tinyMCEBaseURL">/resources/tiny_mce/</property>
         <property name="mongo-host">localhost</property>
         <property name="mongo-db">vidanueva</property>
         <property name="mongo-users-table">users</property>

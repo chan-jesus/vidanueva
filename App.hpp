@@ -19,10 +19,12 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include <Wt/WApplication>
-#include <Wt/WSignal>
 #include "UserManager.hpp"
 #include "MainWindow.hpp"
+#include <Wt/WApplication>
+#include <Wt/WSignal>
+#include <string>
+#include <mongo/client/connpool.h>
 
 namespace Wt {
     class WEnvironment;
@@ -31,6 +33,8 @@ namespace Wt {
 using Wt::WEnvironment;
 using Wt::WApplication;
 using Wt::Signal;
+using std::string;
+using mongo::BSONObj;
 
 namespace vidanueva {
 
@@ -44,12 +48,19 @@ private:
     void onURLChange(const std::string& path);
     void showLoginDialog();
     AppSignal* _userChanged;
+    string _mongoHostName;
+    string _mongoDB;
 public:
     VidaApp(const WEnvironment &environment);
     bool loggedIn() { return !_username.empty(); }         /// Returns true if a user is logged in, otherwise false if current user is anonymous
     std::string username() { return _username; }           /// Returns the username if someone is logged in, "" otherwise
     AppSignal* userChanged() { return _userChanged; }      /// An event triggered when a user logs in or logs out
     MainWindow* mainWindow() { return _mainWindow; }       /// A pointer to the main window widget
+    void goHome() { setInternalPath("/", true); }
+    const string& mongoHostname() { return _mongoDB; }     /// Returns the hostname of our mongo db
+    const string& mongoDB() { return _mongoDB; }           /// Returns the name of the actual database inside of mongo
+    const string mongoNSFor(const string& tableName) { return _mongoDB + "." + tableName; } /// Returns the mongo namespace for any given tablename eg: "pages" => "vidanueva.pages"
+    void mongoSave(const string& tableName, mongo::BSONObj& index, mongo::BSONObj& data);
 };
 
 

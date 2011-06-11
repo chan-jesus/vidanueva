@@ -40,7 +40,8 @@ namespace vidanueva {
     public:
         MainWindow(WContainerWidget* parent=0);
         void onUserChanged(VidaApp* app);
-        void setStatusText(const WString& newMessage);
+        void setStatusText(const WString& newMessage) { bindString("status-text", newMessage); }
+        void setBody(WWidget* newChild) { bindWidget("content", newChild); }
     };
 
 } // namespace vidavnueva

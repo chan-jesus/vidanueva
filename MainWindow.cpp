@@ -56,8 +56,4 @@ void MainWindow::onUserChanged(VidaApp* app) {
 }
 
 
-void MainWindow::setStatusText(const WString& newMessage) {
-    bindString("status-text", newMessage);
-}
-
 } // namespace vidanueva {

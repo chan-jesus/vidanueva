@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+  <!-- Page Edit Messages -->
+  <message id="page-edit-template">
+      <div class="yui-gf">
+          <div class="yui-u first">${name-label}</div>
+          <div class="yui-u">${name-field}</div>
+      </div>
+      <div class="yui-gf">
+          <div class="yui-u first">${title-label}</div>
+          <div class="yui-u">${title-field}</div>
+      </div>
+      <div>${body-label}</div>
+      <div>${body-field}</div>
+      <div>${buttons}</div>
+  </message>
+  <message id="Edit Page">Edit Page</message>
+  <message id="Page Saved">Page Saved</message>
+</messages>

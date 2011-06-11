@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+  <!-- Login Window Messages -->
+  <message id="dialog-button-bar">
+      <div class="yui-g">
+          <div class="yui-u first">${ok-btn}</div>
+          <div class="yui-u">${cancel-btn}</div>
+      </div>
+  </message>
+</messages>

@@ -19,7 +19,8 @@
 #ifndef LOGIN_WINDOW_HPP
 #define LOGIN_WINDOW_HPP
 
-#include <Wt/WTemplate>
+#include "MoreAwesomeTemplate.hpp"
+#include "DialogButtonBar.hpp"
 #include <Wt/WLineEdit>
 #include <string>
 
@@ -41,15 +42,13 @@ using Wt::WDialog;
 
 namespace vidanueva {
 
-    class LoginWindow : public WTemplate {
+    class LoginWindow : public MoreAwesomeTemplate {
     private:
         WLabel* _usernameLabel;
         WLineEdit* _usernameEdit;
         WLabel* _passwordLabel;
         WLineEdit* _passwordEdit;
-        WPushButton* _okBtn;
-        WPushButton* _cancelBtn;
-        template <class T> void bindAndCreateWidget(T*& pointer, const std::string& name, const WString& labelName="");
+        DialogButtonBar* _btnBar;
     public:
         LoginWindow(WDialog& parentDialog);
         std::string username() { return _usernameEdit->text().toUTF8(); } /// Returns the username entered by the user
