@@ -18,12 +18,14 @@
 
 #include "PageEdit.hpp"
 #include "App.hpp"
+#include <string>
 #include <Wt/WLineEdit>
 #include <Wt/WLabel>
 #include <Wt/WTextEdit>
 #include <Wt/WDialog>
 #include "EditButtonBar.hpp"
 
+using std::string;
 using Wt::WDialog;
 using mongo::BSONObj;
 
@@ -54,15 +56,10 @@ void PageEdit::setUpWidgets() {
 * @brief Saves any changes made to the DB then navigates to the page
 */
 void PageEdit::saveChanges() {
-    // Todo save changes to DB
-    string name = _nameEdit->text().toUTF8();
-    BSONObj data = BSON(
-        "title" << _titleEdit->text().toUTF8() <<
-        "name" << name <<  // TODO: Put an index on name later
-        "body" << _bodyEdit->text().toUTF8());
     VidaApp* app = getApp();
-    BSONObj query = BSON( "name" << name );
-    getApp()->mongoSave("page", query, data);
+    string name =_nameEdit->text().toUTF8();
+    PageData data(name, _titleEdit->text().toUTF8(), _bodyEdit->text().toUTF8());
+    app->pages().save(data);
     app->setInternalPath("/page/" + name, true); // Navigate to the new page
     app->mainWindow()->setStatusText(tr("Page Saved")); // Update the status text
 }

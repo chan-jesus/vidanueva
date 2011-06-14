@@ -19,10 +19,10 @@
 #ifndef CONTROL_PANEL_HPP
 #define CONTROL_PANEL_HPP
 
-#include<Wt/WContainerWidget>
-#include<Wt/WAnchor>
-#include<string>
-#include"App.hpp"
+#include <Wt/WContainerWidget>
+#include <Wt/WAnchor>
+#include <string>
+#include "App.hpp"
 
 using Wt::WContainerWidget;
 using Wt::WAnchor;

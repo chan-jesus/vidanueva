@@ -19,7 +19,7 @@
 #include "ControlPanel.hpp"
 #include "PageEdit.hpp"
 #include <Wt/WDialog>
-#include"App.hpp"
+#include "App.hpp"
 
 using Wt::WDialog;
 

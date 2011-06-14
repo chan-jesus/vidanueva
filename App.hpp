@@ -25,6 +25,7 @@
 #include <Wt/WSignal>
 #include <string>
 #include <mongo/client/connpool.h>
+#include "Page.hpp"
 
 namespace Wt {
     class WEnvironment;
@@ -50,6 +51,9 @@ private:
     AppSignal* _userChanged;
     string _mongoHostName;
     string _mongoDB;
+    PageFactory _pages;
+protected:
+    void refresh();
 public:
     VidaApp(const WEnvironment &environment);
     bool loggedIn() { return !_username.empty(); }         /// Returns true if a user is logged in, otherwise false if current user is anonymous
@@ -61,13 +65,13 @@ public:
     const string& mongoDB() { return _mongoDB; }           /// Returns the name of the actual database inside of mongo
     const string mongoNSFor(const string& tableName) { return _mongoDB + "." + tableName; } /// Returns the mongo namespace for any given tablename eg: "pages" => "vidanueva.pages"
     void mongoSave(const string& tableName, mongo::BSONObj& index, mongo::BSONObj& data);
+    PageFactory& pages() {return _pages;}
 };
-
 
 /**
 * Returns the single app instance for your thread.
 */
-inline VidaApp* getApp() { return dynamic_cast<VidaApp*>(WApplication::instance()); }
+inline VidaApp* getApp() { return dynamic_cast<VidaApp*>(Wt::WApplication::instance()); }
 
 
 } // namespace vidanueva

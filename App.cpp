@@ -40,7 +40,7 @@ using mongo::ScopedDbConnection;
 
 namespace vidanueva {
 
-VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment) {
+VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment), _pages(this) {
     log("NOTICE") << "Resources URL: " << resourcesUrl();
     // Set up our signals
     _userChanged = new AppSignal(this);
@@ -59,6 +59,7 @@ VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment) {
     messageResourceBundle().use(appRoot() + "messages/MainWindow");
     messageResourceBundle().use(appRoot() + "messages/DialogButtonBar");
     messageResourceBundle().use(appRoot() + "messages/misc");
+    messageResourceBundle().use(appRoot() + "messages/Page");
     messageResourceBundle().use(appRoot() + "messages/EditButtonBar");
     // Bundles we won't use quite so much
     messageResourceBundle().use(appRoot() + "messages/LoginWindow", false);
@@ -70,7 +71,11 @@ VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment) {
     setBodyClass("yui-skin-sam");
     // Hook up the url event handlers
     internalPathChanged().connect(this, &VidaApp::onURLChange);
-    setInternalPath("/", true); // Go home, no matter what URL they put in
+}
+
+void VidaApp::refresh() {
+    WApplication::refresh();
+    log("NOTICE") << "Refresh " << url();
 }
 
 /**
@@ -91,9 +96,8 @@ void VidaApp::onURLChange(const std::string& path) {
         }
     } else if (internalPathMatches("/page")) {
         // Look up the page that belongs here
-        mainWindow()->setBody(new WPushButton(path)); // TODO: actually show the page 
+        mainWindow()->setBody(pages().load(internalPathNextPart("/page")));
     }
-
 }
 
 /**
@@ -123,7 +127,9 @@ void VidaApp::showLoginDialog() {
 }
 
 /**
-* @brief Insert/Update a record in the mongo DB
+* @brief Insert/Update a record in the mongo DB.
+* 
+* Probably shouldn't be called much, better to use something like app.pages().save(...)
 *
 * @param tableName The name of the table to insert/update on
 * @param index The index to look up the existing record
@@ -134,7 +140,6 @@ void VidaApp::mongoSave(const string& tableName, mongo::BSONObj& index, mongo::B
     db->update(mongoNSFor(tableName), index, data, true);
     db.done();
 }
-
 
 /**
 * @brief The main vidanueva app
@@ -166,8 +171,8 @@ int main(int argc, char **argv) {
         WServer server(argv[0]);
         server.setServerConfiguration(argc, argv, WTHTTP_CONFIGURATION);
 
-        server.addEntryPoint(Wt::Application, vidanueva::createApplication, "/vida", "/css/favicon.ico");
-        server.addEntryPoint(Wt::Application, vidanueva::createRedirectApp, "/", "/css/favicon.ico");
+        server.addEntryPoint(Wt::Application, vidanueva::createApplication, "/", "/css/favicon.ico");
+        //server.addEntryPoint(Wt::Application, vidanueva::createRedirectApp, "/", "/css/favicon.ico");
 
         if (server.start()) {
             WServer::waitForShutdown();

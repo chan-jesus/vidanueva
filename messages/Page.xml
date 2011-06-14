@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+  <!-- Messages for viewing pages -->
+  <message id="page-template">
+      <h1 id="page-title">${title}</h1>
+      <div id="page-body">${body}</div>
+  </message>
+  <message id="page-404-title">404 Page Not Found</message>
+  <message id="page-404-body"><a href="/">Click here to go home</a></message>
+</messages>

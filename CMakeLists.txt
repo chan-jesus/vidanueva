@@ -36,7 +36,7 @@ include_directories(BEFORE ${Boost_INCLUDE_DIRS})
 
 # Build the executable
 ADD_EXECUTABLE(${PROJECT_NAME} App.cpp
-    MainWindow.cpp LoginWindow.cpp UserManager.cpp ControlPanel.cpp PageEdit.cpp)
+    MainWindow.cpp LoginWindow.cpp UserManager.cpp ControlPanel.cpp Page.cpp PageEdit.cpp)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME}
     ${Boost_SYSTEM_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_SIGNALS_LIBRARY}
     ${Boost_DATE_TIME_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY}
