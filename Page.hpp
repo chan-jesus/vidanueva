@@ -58,7 +58,7 @@ public:
 class Page : public MoreAwesomeTemplate {
 public:
     Page(PageData& data) : MoreAwesomeTemplate() {
-        setTemplateText("page-template");
+        setTemplateText(tr("page-template"));
         bindString("title", data.title());
         bindString("body", data.body());
     }
