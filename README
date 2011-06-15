@@ -1,0 +1,15 @@
+This is going to be a generic church website program.
+
+At the moment, it's just a website for my church.
+
+It's written in c++, and depends on wt-3.1.8 and mongodb.
+
+Todo:
+
+ * Login for members
+ * Bilingual editing (as my church is Spanish speaking)
+ * Upload Sermon mp3s
+ * Special cellphone version automagic
+ * Rostering (cleaning, music, kitchen, etc.)
+
+Open to other ideas ..
