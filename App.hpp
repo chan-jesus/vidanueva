@@ -59,7 +59,7 @@ public:
     AppSignal* userChanged() { return _userChanged; }      /// An event triggered when a user logs in or logs out
     MainWindow* mainWindow() { return _mainWindow; }       /// A pointer to the main window widget
     void goHome() { setInternalPath("/", true); }
-    const string& mongoHostname() { return _mongoDB; }     /// Returns the hostname of our mongo db
+    const string& mongoHostname() { return _mongoHostName; }     /// Returns the hostname of our mongo db
     const string& mongoDB() { return _mongoDB; }           /// Returns the name of the actual database inside of mongo
     const string mongoNSFor(const string& tableName) { return _mongoDB + "." + tableName; } /// Returns the mongo namespace for any given tablename eg: "pages" => "vidanueva.pages"
     void mongoSave(const string& tableName, mongo::BSONObj& index, mongo::BSONObj& data);
