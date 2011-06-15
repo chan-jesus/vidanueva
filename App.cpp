@@ -71,11 +71,7 @@ VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment), _
     setBodyClass("yui-skin-sam");
     // Hook up the url event handlers
     internalPathChanged().connect(this, &VidaApp::onURLChange);
-}
-
-void VidaApp::refresh() {
-    WApplication::refresh();
-    log("NOTICE") << "Refresh " << url();
+    setInternalPath(internalPath(), true);
 }
 
 /**

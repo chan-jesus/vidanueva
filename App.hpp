@@ -52,8 +52,6 @@ private:
     string _mongoHostName;
     string _mongoDB;
     PageFactory _pages;
-protected:
-    void refresh();
 public:
     VidaApp(const WEnvironment &environment);
     bool loggedIn() { return !_username.empty(); }         /// Returns true if a user is logged in, otherwise false if current user is anonymous
