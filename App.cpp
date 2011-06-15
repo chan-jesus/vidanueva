@@ -90,9 +90,11 @@ void VidaApp::onURLChange(const std::string& path) {
             log("NOTICE") << "GOING HOME 1";
             goHome(); // Back to the home page .. can't login twice
         }
-    } else if (internalPathMatches("/page")) {
+    } else if (internalPathMatches("/page/")) {
         // Look up the page that belongs here
-        mainWindow()->setBody(pages().load(internalPathNextPart("/page")));
+        std::string pageName = internalPathNextPart("/page/");
+        Page* page = pages().load(pageName);
+        mainWindow()->setBody(page);
     }
 }
 
@@ -155,7 +157,7 @@ WApplication *createApplication(const WEnvironment& env) { return new VidaApp(en
 */
 WApplication *createRedirectApp(const WEnvironment& env) {
     WApplication* app = new WApplication(env);
-    app->redirect("/vida" + app->internalPath());
+    app->redirect("/vida#" + app->internalPath());
     app->quit();
     return app;
 }
@@ -167,8 +169,8 @@ int main(int argc, char **argv) {
         WServer server(argv[0]);
         server.setServerConfiguration(argc, argv, WTHTTP_CONFIGURATION);
 
-        server.addEntryPoint(Wt::Application, vidanueva::createApplication, "/", "/css/favicon.ico");
-        //server.addEntryPoint(Wt::Application, vidanueva::createRedirectApp, "/", "/css/favicon.ico");
+        server.addEntryPoint(Wt::Application, vidanueva::createApplication, "/vida", "/css/favicon.ico");
+        server.addEntryPoint(Wt::Application, vidanueva::createRedirectApp, "/", "/css/favicon.ico");
 
         if (server.start()) {
             WServer::waitForShutdown();
