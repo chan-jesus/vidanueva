@@ -13,10 +13,10 @@
             ${content}
           </div>
         </div>
-      </div>
-      <div class="yui-b">
-        <div class="yui-g">${controls}</div>
-        <div class="yui-g">${nav}</div>
+        <div class="yui-b">
+          <div class="yui-g">${controls}</div>
+          <div class="yui-g">${nav}</div>
+        </div>
       </div>
     </div>
     <div id="ft" role="contentinfo">
