@@ -41,3 +41,7 @@ TARGET_LINK_LIBRARIES(${PROJECT_NAME}
     ${Boost_SYSTEM_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_SIGNALS_LIBRARY}
     ${Boost_DATE_TIME_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY}
     ${wt} ${wthttp} mongoclient ssl)
+
+# Just to get started, this program will set up the DB
+ADD_EXECUTABLE(setupDB setupDB.cpp UserManager.cpp)
+TARGET_LINK_LIBRARIES(setupDB ${Boost_SYSTEM_LIBRARY} mongoclient ssl)

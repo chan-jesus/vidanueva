@@ -31,7 +31,7 @@ namespace vidanueva {
         string _namespace;
         void ensureIndex();
     public:
-        void configure(const string& hostname, const string& dbName, const string& tableName);
+        void configure(const string& hostname, const string& dbName, const string& tableName="users");
         bool checkLogin(const string& username, const string& password);
         void savePassword(const string& username, const string& password);
     };
