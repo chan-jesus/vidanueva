@@ -64,6 +64,7 @@ cmake ..
 ccmake ..
 # Do any manual config needed
 make -j4
+./setupDB --setup localhost vidanueva secretPassword
 ./vidanueva --docroot="static-content" --no-compression --http-address=0.0.0.0 --http-port=8000 -c wt-config.xml
 # Go in your browser to http://localhost:8000</pre>
 <h2>License</h2>
