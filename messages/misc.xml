@@ -10,6 +10,10 @@
     <message id="Create">Create</message>
     <message id="Save">Save</message>
     <message id="Cancel">Cancel</message>
+    <message id="Discard Edits">Discard Edits</message>
+    <message id="you-want-discard">Discard work just done on this page?</message>
+    <message id="Save Changes">Save Changes</message>
+    <message id="you-want-save">Save changes to the database?</message>
 </messages>
 
 

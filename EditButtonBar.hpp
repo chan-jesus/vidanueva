@@ -19,15 +19,15 @@
 #ifndef EDIT_BUTTON_BAR_HPP
 #define EDIT_BUTTON_BAR_HPP
 
-#include <Wt/WDialog>
+#include <Wt/WString>
 #include <Wt/WPushButton>
 #include <Wt/WSignal>
 #include <Wt/WMessageBox>
 #include "App.hpp"
-#include "MoreAwesomeTemplate.hpp"
+#include "ButtonBar.hpp"
 
+using Wt::WString;
 using Wt::WPushButton;
-using Wt::WDialog;
 using Wt::WMessageBox;
 
 namespace vidanueva {
@@ -38,10 +38,8 @@ namespace vidanueva {
 * Cancel will navigate the app back to "/".
 * OK will trigger the 'onOk' event
 */
-class EditButtonBar : public MoreAwesomeTemplate {
+class EditButtonBar : public ButtonBar {
 private:
-    WPushButton* _okBtn;
-    WPushButton* _cancelBtn;
     Wt::Signal<>* _okHit;
     /// Handles when cancel button is hit. Prompts the user, then navigates back to home page
     void handleCancel() {
@@ -62,13 +60,12 @@ public:
     *
     * @param parent Parent Widget
     */
-    EditButtonBar(WContainerWidget* parent=0) : MoreAwesomeTemplate(parent) {
+    EditButtonBar(WContainerWidget* parent=0) : ButtonBar(WString::tr("Save"), WString::tr("cancel"), parent) {
         _okHit = new Wt::Signal<>(this);
-        setTemplateText(tr("edit-button-bar"));
-        bindAndCreateWidget(_okBtn, "ok-btn", tr("Save"));
-        bindAndCreateWidget(_cancelBtn, "cancel-btn", tr("cancel-btn"));
-        _okBtn->clicked().connect(this, &EditButtonBar::handleOk);
-        _cancelBtn->clicked().connect(this, &EditButtonBar::handleCancel);
+        // OK/Save Button
+        _btn1->clicked().connect(this, &EditButtonBar::handleOk);
+        // Cancel Button
+        _btn2->clicked().connect(this, &EditButtonBar::handleCancel);
     }
     /**
     * @brief Connect to this event for when the OK button is hit and confirmed

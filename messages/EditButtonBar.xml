@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<messages>
+  <message id="button-bar">
+      <div class="yui-g button-bar">
+          <div class="yui-u first">&nbsp;</div>
+          <div class="yui-u yui-g">
+            <div class="yui-u first">${btn-1}</div>
+            <div class="yui-u">${btn-2}</div>
+          </div>
+      </div>
+  </message>
+</messages>
