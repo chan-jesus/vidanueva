@@ -52,11 +52,40 @@
     <h2>Dependencies</h2>
 <p>wt-3.1.8
 mongodb</p>
-<h2>Install</h2>
+<h2>Install (Old)</h2>
 <pre>
 sudo apt-get install build-essential g++ witty-dev cmake cmake-curses-gui mongodb-dev
 cd
 git clone git://github.com/chan-jesus/vidanueva.git
+cd vidanueva
+mkdir build
+cd build
+cmake ..
+ccmake ..
+# Do any manual config needed
+make -j4
+./setupDB --setup localhost vidanueva secretPassword
+./vidanueva --docroot="static-content" --no-compression --http-address=0.0.0.0 --http-port=8000 -c wt-config.xml
+# Go in your browser to http://localhost:8000</pre>
+<h2>Install (New)</h2>
+<p>It now depends on patched version of Witty. Patch file is git. New install is: </p>
+<pre>
+sudo apt-get install build-essential g++ cmake cmake-curses-gui mongodb-dev
+cd
+# Get the vidanueva code
+git clone git://github.com/chan-jesus/vidanueva.git
+# Now Witty
+sudo apt-get build-dep witty-dev
+git clone http://www.webtoolkit.eu/git/wt.git
+cd wt
+patch -p1 < ../vidanueva/witty.patch
+mkdir build
+cd build
+cmake ..
+make -j 12
+sudo make install
+cd ..
+# Now vida nueva again
 cd vidanueva
 mkdir build
 cd build
