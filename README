@@ -13,3 +13,24 @@ Todo:
  * Rostering (cleaning, music, kitchen, etc.)
 
 Open to other ideas ..
+
+How Sessions Work
+=================
+
+So witty has sessions, they are for a single WApplication instance.
+
+We have another session cookie, for logged in users.
+
+When a user is logged in we consider WApplications to be just views onto a larger logged in session.
+
+There's a singleton, thread safe store that hooks together cookies with logged in usernames.
+
+Each VidaApp (our application instance) holds a 'SessionHandle'. So if a user is logged in on one tab, they're logged in
+on both tabs.
+
+If they just type in a url in the browser bar, it'll create a new VidaApp instance, that'll check the session store
+using their browser's session cookie.
+
+Timeout is handled on the server side .. default is 30 mins right now .. if you use the app during the 30 mins, it
+should reset the session cookie. The actual client side cookie timeout is really really long, like a month I think,
+but it won't do you any good unless the server side has it hooked up to a logged in username.

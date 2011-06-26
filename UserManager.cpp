@@ -62,7 +62,7 @@ void UserManager::configure(const string& hostname, const string& dbName, const 
 */
 bool UserManager::checkLogin(const string& username, const string& password) {
     ScopedDbConnection db(_hostname);
-    auto_ptr<DBClientCursor> cursor = db->query(_namespace, BSON( "username" << username ), 1);
+    auto_ptr<DBClientCursor> cursor(db->query(_namespace, BSON( "username" << username ), 1));
     if (cursor->more()) {
         BSONObj data = cursor->next();
         db.done();
@@ -75,6 +75,7 @@ bool UserManager::checkLogin(const string& username, const string& password) {
             if (reinterpret_cast<const unsigned char*>(dbPassHash[i].value())[0] != suppliedHash[i])
                 return false;
         }
+        _username = username;
         return true;
     }
     db.done();

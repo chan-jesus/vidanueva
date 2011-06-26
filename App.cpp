@@ -21,11 +21,11 @@
 #include <Wt/WString>
 #include <Wt/WServer>
 #include <Wt/WLogger>
-#include <Wt/WDialog>
 #include <Wt/WPushButton>
 #include <Wt/WFileResource>
 #include <string>
 #include "LoginWindow.hpp"
+#include "SessionStore.hpp"
 
 namespace Wt {
     class WEnvironment;
@@ -34,7 +34,6 @@ namespace Wt {
 using Wt::WString;
 using Wt::WApplication;
 using Wt::WEnvironment;
-using Wt::WDialog;
 using Wt::WServer;
 using mongo::ScopedDbConnection;
 
@@ -42,6 +41,7 @@ namespace vidanueva {
 
 VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment), _pages(this) {
     log("NOTICE") << "Resources URL: " << resourcesUrl();
+    _userSession = new SessionHandle(this);
     // Set up our signals
     _userChanged = new AppSignal(this);
     // Add some styles
@@ -53,14 +53,14 @@ VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment), _
     readConfigurationProperty("mongo-host", _mongoHostName); 
     readConfigurationProperty("mongo-db", _mongoDB);
     readConfigurationProperty("mongo-users-table", mongoUsersTable);
-    _userManager.configure(_mongoHostName, _mongoDB, mongoUsersTable);
+    _userSession->configureMongo(_mongoHostName, _mongoDB, mongoUsersTable);
     // Load our message bundles
     // Bundles we'll use a lot
     messageResourceBundle().use(appRoot() + "messages/MainWindow");
     messageResourceBundle().use(appRoot() + "messages/DialogButtonBar");
     messageResourceBundle().use(appRoot() + "messages/misc");
     messageResourceBundle().use(appRoot() + "messages/Page");
-    messageResourceBundle().use(appRoot() + "messages/EditButtonBar");
+    messageResourceBundle().use(appRoot() + "messages/ButtonBar");
     // Bundles we won't use quite so much
     messageResourceBundle().use(appRoot() + "messages/LoginWindow", false);
     messageResourceBundle().use(appRoot() + "messages/ControlPanel", false);
@@ -69,59 +69,8 @@ VidaApp::VidaApp(const WEnvironment &environment) : WApplication(environment), _
     setTitle(WString::tr("main-title"));
     _mainWindow = new MainWindow(root());
     setBodyClass("yui-skin-sam");
-    // Hook up the url event handlers
-    internalPathChanged().connect(this, &VidaApp::onURLChange);
+    // Show the stuff from the right thing for the right path the entered on
     setInternalPath(internalPath(), true);
-}
-
-/**
-* @brief Called when the url is changed
-* 
-* At the moment we're only interested in showing the login dialog if the user is logged in
-*/
-void VidaApp::onURLChange(const std::string& path) {
-    log("NOTICE") << "Changing path: " << path;
-    if (internalPathMatches("/login")) {
-        log("NOTICE") << "Matches login path";
-        if (_username == "") {
-            // If no-one's logged in. Show the login dialog
-            showLoginDialog();
-        } else {
-            log("NOTICE") << "GOING HOME 1";
-            goHome(); // Back to the home page .. can't login twice
-        }
-    } else if (internalPathMatches("/page/")) {
-        // Look up the page that belongs here
-        std::string pageName = internalPathNextPart("/page/");
-        Page* page = pages().load(pageName);
-        mainWindow()->setBody(page);
-    }
-}
-
-/**
-* @brief Shows a modal login dialog
-*/
-void VidaApp::showLoginDialog() {
-    WDialog dialog(WString::tr("login"));
-    LoginWindow* loginWindow = new LoginWindow(dialog);
-    loginWindow->setFocus();
-    if (dialog.exec() == WDialog::Accepted) {
-        dialog.hide();
-        // See if we can log them in
-        _userManager.savePassword(loginWindow->username(), loginWindow->password());
-        if (_userManager.checkLogin(loginWindow->username(), loginWindow->password())) {
-            _username = loginWindow->username();
-            log("SECURITY") << loginWindow->username() << " logged in";
-            goHome(); // Back to the home page
-            _userChanged->emit(this);
-            return;
-        } else {
-            mainWindow()->setStatusText(WString::tr("Wrong username or password"));
-            log("SECURITY") << loginWindow->username() << " failed log in";
-        }
-    }
-    _username = ""; // If we make it here .. we're not logged in anymore
-    goHome(); // Back to the home page
 }
 
 /**
@@ -169,8 +118,9 @@ int main(int argc, char **argv) {
         WServer server(argv[0]);
         server.setServerConfiguration(argc, argv, WTHTTP_CONFIGURATION);
 
-        server.addEntryPoint(Wt::Application, vidanueva::createApplication, "/vida", "/css/favicon.ico");
-        server.addEntryPoint(Wt::Application, vidanueva::createRedirectApp, "/", "/css/favicon.ico");
+        server.addEntryPoint(Wt::Application, vidanueva::createApplication, "", "/css/favicon.ico");
+        //server.addEntryPoint(Wt::Application, vidanueva::createApplication, "/", "/css/favicon.ico");
+        //server.addEntryPoint(Wt::Application, vidanueva::createRedirectApp, "/", "/css/favicon.ico");
 
         if (server.start()) {
             WServer::waitForShutdown();

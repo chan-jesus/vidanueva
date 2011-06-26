@@ -53,6 +53,7 @@ Page* PageFactory::load(const string& name) {
         realName = name.substr(1); // Remove the '/' at the front
     }
     VidaApp* app = getApp();
+    Page* result = 0;
     // Check the cache
     CacheType::iterator hit = cache.find(realName);
     if (hit == cache.end()) {
@@ -63,21 +64,22 @@ Page* PageFactory::load(const string& name) {
             BSONObj data = cursor->next();
             // For now, just put it into the cache. TODO: Have a max cache size and do some clever cache managagement
             CacheType::value_type newVal(name, PageCacheEntry(data));
-            return cache.insert(newVal).first->second.createPage();
+            result = cache.insert(newVal).first->second.createPage();
         } else {
             // Return a 404 page .. will create it if not in cache already. Magic :D
             if (realName != "404") {
-                return load("404");
+                result = load("404");
             } else {
                 // OK we're being asked to return a 404 because we don't have  404 page .. make up a default one
                 CacheType::value_type newVal("404", PageCacheEntry("404", WString::tr("page-404-title").toUTF8(), WString::tr("page-404-body").toUTF8()));
-                return cache.insert(newVal).first->second.createPage();
+                result = cache.insert(newVal).first->second.createPage();
             }
         }
         db.done();
     } else {
-        return hit->second.createPage();
+        result = hit->second.createPage();
     }
+    return result;
 }
 
 /**
