@@ -15,8 +15,8 @@ label {
   margin-top: 3px;
 }
 
-.Wt-dialog {
-  min-width: 200px;
+.dialog {
+  width: 200px;
 }
 
 .button-bar {
