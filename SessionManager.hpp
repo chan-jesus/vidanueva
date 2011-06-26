@@ -3,12 +3,10 @@
  *
  *       Filename:  SessionManager.hpp
  *
- *    Description:  An in memory, thread safe Session manager
- *                  Because witty's 'internalPathChanged' thing is not being too happy
- *                  with html5 api .. I'm having to manage logged in users on my own.
+ *    Description:  Hooks together witty-sessions- and the mongo UserManager
  *
  *        Version:  1.0
- *        Created:  06/22/2011 08:32:16 PM
+ *        Created:  06/25/2011 08:58:24 AM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -18,35 +16,27 @@
  * =====================================================================================
  */
 
-#include <string>
-#include <c_time>
-#include <map>
-#include <boost/thread/mutex.hpp>
+#ifndef SESSION_MANAGER_HPP
+#define SESSION_MANAGER_HPP
 
-using std::string;
-using std::time_t;
-using std::map;
-using boost::UpgradeLockable;
+#include <Wt/WObject>
+#include "SessionStore.hpp"
+#include "UserManager.hpp"
 
 namespace vidanueva {
 
-class Session;
-
 /**
-* @brief Handles logged in users
+* @brief A handle to the session of the currently logged in user
 */
-class SessionManager {
-private:
-   typedef map<Session>::iterator PSession;
-   UpgradeLockable _lock; // Many can read session info .. but only one can write it
-   unsigned long _timeout; /// How long a single session lasts
-   map<Session> _loggedInUsers; /// Holds data for logged in users. Key is the cookie.
+class SessionManager : public WObject {
 public:
-    SessionManager(unsigned long timeout) : _timeout(timeout); /// timeout for logged in session in msecs
-    ~SessionManager();
-    void login(const string& username, const string& ip, const string& cookie);
-    bool isLoggedIn(const string& cookie);
-    bool logout(const string& cookie);
+    bool tryLogin(const string& username, const string& password);
+    void touchSession();
+    string username();
+
 };
 
 } // namespace vidanueva
+
+#endif // SESSION_MANAGER_HPP
+

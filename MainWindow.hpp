@@ -19,6 +19,7 @@
 #ifndef MAIN_WINDOW_HPP
 #define MAIN_WINDOW_HPP
 
+#include <string>
 #include <Wt/WTemplate>
 
 namespace Wt {
@@ -37,11 +38,16 @@ namespace vidanueva {
 
     // The MainWindow Class
     class MainWindow : public WTemplate {
+    private:
+        const static std::string pageBaseURL;
+        const static std::string loginURL;
     public:
         MainWindow(WContainerWidget* parent=0);
+        void refresh();
         void onUserChanged(VidaApp* app);
         void setStatusText(const WString& newMessage) { bindString("status-text", newMessage); }
         void setBody(WWidget* newChild) { bindWidget("content", newChild); }
+        void onPathChange(const std::string& path);
     };
 
 } // namespace vidavnueva

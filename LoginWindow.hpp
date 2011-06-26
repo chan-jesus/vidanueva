@@ -20,7 +20,7 @@
 #define LOGIN_WINDOW_HPP
 
 #include "MoreAwesomeTemplate.hpp"
-#include "DialogButtonBar.hpp"
+#include "ButtonBar.hpp"
 #include <Wt/WLineEdit>
 #include <string>
 
@@ -29,7 +29,6 @@ namespace Wt {
     class WLabel;
     class WContainerWidget;
     class WPushButton;
-    class WDialog;
 }
 
 using Wt::WTemplate;
@@ -38,7 +37,6 @@ using Wt::WLabel;
 using Wt::WContainerWidget;
 using Wt::WPushButton;
 using Wt::WLineEdit;
-using Wt::WDialog;
 
 namespace vidanueva {
 
@@ -48,11 +46,11 @@ namespace vidanueva {
         WLineEdit* _usernameEdit;
         WLabel* _passwordLabel;
         WLineEdit* _passwordEdit;
-        DialogButtonBar* _btnBar;
+        ButtonBar* _btnBar;
+        void handleOKHit();
+        void handleCancelHit();
     public:
-        LoginWindow(WDialog& parentDialog);
-        std::string username() { return _usernameEdit->text().toUTF8(); } /// Returns the username entered by the user
-        std::string password() { return _passwordEdit->text().toUTF8(); } /// Returns the password entered by the user
+        LoginWindow(WContainerWidget* parent=0);
         void setFocus() { _usernameEdit->setFocus(); }
     };
 

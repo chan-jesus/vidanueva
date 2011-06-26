@@ -29,11 +29,16 @@ namespace vidanueva {
     private:
         string _hostname;
         string _namespace;
+        string _username;
         void ensureIndex();
     public:
         void configure(const string& hostname, const string& dbName, const string& tableName="users");
         bool checkLogin(const string& username, const string& password);
+        void forceLogin(const string& username) { _username = username; } /// Just sets the username
         void savePassword(const string& username, const string& password);
+        void logout() { _username = ""; }               /// Logs out the current user
+        const string& username() { return _username; }   /// Returns the currently logged in user
+        bool isLoggedIn() { return !_username.empty(); } /// Returns true if someone is logged in
     };
 
 } // namespace vidanueva

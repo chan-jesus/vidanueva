@@ -2,8 +2,10 @@ CMAKE_MINIMUM_REQUIRED( VERSION 2.8 )
 
 PROJECT(vidanueva)
 
+ADD_DEFINITIONS(-Wall -Wextra)
+
 # Copy resources needed
-FILE(COPY debug-run.sh messages static-content DESTINATION .)
+FILE(COPY debug-run.sh run.sh messages static-content DESTINATION .)
 
 SET(DEBUG true)
 
@@ -36,7 +38,8 @@ include_directories(BEFORE ${Boost_INCLUDE_DIRS})
 
 # Build the executable
 ADD_EXECUTABLE(${PROJECT_NAME} App.cpp
-    MainWindow.cpp LoginWindow.cpp UserManager.cpp ControlPanel.cpp Page.cpp PageEdit.cpp)
+    MainWindow.cpp LoginWindow.cpp UserManager.cpp ControlPanel.cpp Page.cpp PageEdit.cpp
+    UserManager.cpp SessionStore.cpp SessionHandle.cpp)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME}
     ${Boost_SYSTEM_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} ${Boost_SIGNALS_LIBRARY}
     ${Boost_DATE_TIME_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY}
