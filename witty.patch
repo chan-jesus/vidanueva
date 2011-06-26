@@ -14,7 +14,7 @@ index 6e87dcd..84137b2 100644
  	* WAbstractItemView, WTreeView: fix browser memory leaks of
  	inline stylesheet definitions (#834)
 diff --git a/src/Wt/WApplication b/src/Wt/WApplication
-index faee3b6..703cba4 100644
+index faee3b6..9e55d92 100644
 --- a/src/Wt/WApplication
 +++ b/src/Wt/WApplication
 @@ -1366,6 +1366,15 @@ public:
@@ -39,7 +39,7 @@ index faee3b6..703cba4 100644
  		 int maxAge, const std::string& domain = "",
 -		 const std::string& path = "");
 +		 const std::string& path = "",
-+		 bool httpOnly=false, bool secure=false);
++		 bool httpOnly=true, bool secure=false);
  
    /*! \brief Adds an HTML meta header.
     *
